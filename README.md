@@ -6,7 +6,7 @@ Steam je brezplačna igričarska platforma kjer uporabniki primarno kupujejo in 
 Ideja programa ja, da bi na podlagi vpisane starosti profila, s pomočjo predvidevanja izračunal predvidene vrednosti teh lastnosti glede na vzorcec, ki ga predhodno sam zgenerira.
 
 **Primer profila:**
-![steam_profile](steam_profile)
+![steam_profile](/steam_profile.png)
 
 ## knjižnice, ki so potrebne za delovanje
 + numpy
@@ -26,4 +26,4 @@ Datoteka sprva prebere tekstkovno datoteko, ki jo je zgenerirala skripta crawler
 Nato program odpre uporabniški vmesnik, v katerem lahko sam uporabnik vpisuje različne starosti in program mu vrne izračunane pričakovane vrednosti vseh lastnosti, ko ta doseže vpisano starost. Zraven pa se tudi izrišejo vse slike, ki predstavlajo regresije raznih lastnosti.
 
 **Izgled končnega programa**
-![gui_example](gui_example)
+![gui_example](/gui_example.png)
