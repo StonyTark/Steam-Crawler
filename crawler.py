@@ -60,10 +60,12 @@ class User:
         data_dict = dict()
         page = requests.get(profile_url + user_id).text
         updated_page = page.replace('\n', '').replace('\r', '').replace('\t', '')
+
         if re.findall('This profile is private|This user has not yet set up their Steam Community', updated_page):
             self._is_private = True
             return data_dict
         level = re.findall('class="friendPlayerLevelNum">.*</span>', updated_page)
+
         if not level:
             self._is_private = True
             return data_dict
@@ -84,6 +86,7 @@ class User:
         friends_link = 'http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key={0}&steamid={1}&relationship=friend'.format(
             KEY, user_id)
         friends_dict = eval(requests.get(friends_link).text)
+
         if not friends_dict:
             self._is_private = True
             return
@@ -96,13 +99,14 @@ class User:
     @staticmethod
     def get_owned_games(user_id):
         """Gets data for user_id games and played time for 2 week and all time"""
-        games_link = 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={0}&steamid={1}&format=json'.format(
-            KEY, user_id)
+        games_link = 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={0}&steamid={1}&format=json'.format(KEY, user_id)
         hours_played_page = eval(requests.get(games_link).text)['response']
+
         if hours_played_page:
             games = hours_played_page.get('game_count')
             hours_played = sum([game.get('playtime_forever', 0) / 60 for game in hours_played_page['games']])
             two_week_played = sum(game.get('playtime_2weeks', 0) / 60 for game in hours_played_page['games'])
+
             return games, round(two_week_played), round(hours_played)
         return 0, 0, 0
 
@@ -114,6 +118,7 @@ class User:
         """Returns true if profile is private"""
         return self._is_private or not bool(self._all_friend_ids)
 
+
 profile = User(zakhrayseh_id)
 previous_profile = User(zakhrayseh_id)
 
@@ -123,13 +128,14 @@ for _ in range(100):
     if profile.has_no_friends():
         next_friend = previous_profile.choose_friend()
         profile = User(next_friend)
+
         if not profile.has_no_friends():
             print(profile, file=for_write)
     else:
         next_friend = profile.choose_friend()
         previous_profile = profile
         profile = User(next_friend)
+
         if not profile.has_no_friends():
             print(profile, file=for_write)
-    print(_)
 
